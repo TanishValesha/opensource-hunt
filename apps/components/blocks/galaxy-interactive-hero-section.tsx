@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Suspense, lazy } from 'react'
 import { ImGithub } from "react-icons/im";
 import { motion, useAnimation } from 'framer-motion';
-import { signIn, useSession, SessionProvider } from 'next-auth/react';
+import { signIn, signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 const Spline = lazy(() => import('@splinetool/react-spline'))
 
@@ -216,7 +216,7 @@ function HeroContent() {
   };
 
   const navigate = useRouter();
-  const {status} = useSession();
+  const {status, data: session} = useSession();
 
   return (
     <motion.div 
@@ -429,7 +429,7 @@ function Navbar() {
   return (
     <motion.nav 
       className="fixed top-0 left-0 right-0 z-20 shadow-2xl" 
-      style={{ backgroundColor: 'rgba(13, 13, 24, 0.3)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', borderRadius: '0 0 15px 15px' }}
+      style={{ backgroundColor: "#00000", borderRadius: '0 0 15px 15px' }}
       initial={{ opacity: 0, y: -50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1, ease: "easeOut" }}
