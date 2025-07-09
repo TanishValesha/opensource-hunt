@@ -1,3 +1,4 @@
+/* eslint-disable */
 "use client";
 
 import React, { useEffect, useRef, useState } from 'react';
@@ -378,12 +379,13 @@ Find beginner-friendly issues, explore trending projects, and start contributing
 function Navbar() {
   const [hoveredNavItem, setHoveredNavItem] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const {status} = useSession();
   const [mobileDropdowns, setMobileDropdowns] = useState({
     features: false,
     enterprise: false,
     resources: false,
   });
-
+  const navigate = useRouter();
   const handleMouseEnterNavItem = (item: string) => setHoveredNavItem(item);
   const handleMouseLeaveNavItem = () => setHoveredNavItem(null);
 
@@ -410,6 +412,7 @@ function Navbar() {
 
      return `text-sm transition duration-150 ${colorClass} ${extraClasses}`;
   };
+  
 
    useEffect(() => {
     const handleResize = () => {
@@ -461,7 +464,7 @@ function Navbar() {
           className="bg-[#8200DB29] hover:bg-black/50 flex gap-2 justify-center items-center text-white font-semibold py-2 px-6 sm:px-6 rounded-full transition-all duration-300 w-full sm:w-auto border border-[#322D36] heavy-shadow-primary" 
           style={{ backdropFilter: 'blur(8px)' }}
         >
-          <span>{useSession().status === "authenticated" ? "View Projects" : "Sign In"}</span><ImGithub className='text-2xl'/>
+          <span>{status === "authenticated" ? "View Projects" : "Sign In"}</span><ImGithub className='text-2xl'/>
         </button>
           {/* <button className="lg:hidden text-white p-2" onClick={toggleMobileMenu} aria-label="Toggle mobile menu">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={isMobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} /></svg>

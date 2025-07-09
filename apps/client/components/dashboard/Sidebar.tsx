@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { ChevronDown, ChevronRight, Search, LayoutDashboard, FileText, Package, CheckSquare, Star, Users, DollarSign, Puzzle, Settings, BookTemplate as Template, ArrowRight, User } from 'lucide-react';
+import { ChevronDown, ChevronRight, Search, LayoutDashboard, FileText, Package, CheckSquare, Star, Users, DollarSign, Puzzle, Settings, BookTemplate as Template, ArrowRight, User, LogOutIcon } from 'lucide-react';
 import { ImGithub } from "react-icons/im";
+import { signOut } from 'next-auth/react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
@@ -28,13 +29,28 @@ export default function Sidebar() {
 
   useEffect(() => {
   const getUserData = async () => {
-    const res = await fetch("/api/user");
+    try {
+      const res = await fetch("/api/user", {
+        method: "GET",
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
     const data = await res.json();
-    setUserDetails(data)
+    setUserDetails(data.data)
+    } catch (error) {
+      console.error(error)
+    }
+    
   }
   getUserData();
 }, [])
   
+const handleLogout = () => {
+    signOut({
+      callbackUrl: `${window.location.origin}/`, // 👈 full URL for App Router compatibility
+    });
+  };
 
   return (
     <div className="w-78 bg-[#0f1419] border-r border-gray-800/50 flex flex-col h-screen shadow-xl">
@@ -62,6 +78,7 @@ export default function Sidebar() {
 
       {/* User Profile */}
       {userDetails != null && (
+        <div className='flex justify-start items-center'>
       <a href={`${userDetails.html_url}`} className="p-4 border-gray-800/50" target="_blank" rel="noopener noreferrer">
         <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800/50 transition-colors duration-200 cursor-pointer group">
             <Image src={userDetails.avatar_url} width={40} height={40} alt="User Profile" className="text-white rounded-full" />
@@ -72,7 +89,10 @@ export default function Sidebar() {
           <ChevronRight className="w-6 h-6 text-gray-400 group-hover:text-white transition-colors duration-200" />
         </div>
       </a>
-
+          <div>
+          <LogOutIcon className='text-white cursor-pointer hover:scale-105' onClick={handleLogout}/>
+          </div>
+      </div>
     )}
     </div>
   );

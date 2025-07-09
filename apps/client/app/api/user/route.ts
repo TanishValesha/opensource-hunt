@@ -9,14 +9,18 @@ export async function GET() {
   }
 
   const accessToken = session.accessToken;
-  console.log(accessToken);
-  
-  const ghRes = await fetch("https://api.github.com/user", {
+  try {
+    const ghRes = await fetch("https://api.github.com/user", {
     headers: {
       Authorization: `token ${accessToken}`,
     },
   });
 
   const data = await ghRes.json();
-  return NextResponse.json(data);
+  return NextResponse.json({data: data}, {status: 200});
+  } catch (error) {
+    return NextResponse.json({ error: "GitHub API Error" }, { status: 500 });
+  }
+  
+  
 }
