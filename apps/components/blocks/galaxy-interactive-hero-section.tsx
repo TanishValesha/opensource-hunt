@@ -6,6 +6,7 @@ import { Suspense, lazy } from 'react'
 import { ImGithub } from "react-icons/im";
 import { motion, useAnimation } from 'framer-motion';
 import { signIn, useSession, SessionProvider } from 'next-auth/react';
+import Image from 'next/image';
 const Spline = lazy(() => import('@splinetool/react-spline'))
 
 
@@ -436,13 +437,11 @@ function Navbar() {
       <div className="container mx-auto px-4 py-4 md:px-6 lg:px-8 flex items-center justify-between">
         <div className="flex items-center space-x-6 lg:space-x-8">
           <div className="text-white flex gap-2 justify-center items-center">
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path fillRule="evenodd" clipRule="evenodd" d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32ZM12.4306 9.70695C12.742 9.33317 13.2633 9.30058 13.6052 9.62118L19.1798 14.8165C19.4894 15.1054 19.4894 15.5841 19.1798 15.873L13.6052 21.0683C13.2633 21.3889 12.742 21.3563 12.4306 19.9991V9.70695Z" fill="currentColor" />
-            </svg>
+            <Image src="/eye.png" width={50} height={50} alt='Logo'/>
             <span
-          className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent font-bold flex text-2xl"
+          className="text-white font-bold flex text-2xl"
         >
-          OpenSource Hunt
+          OpenSource-Hunt
         </span>
           </div>
 
