@@ -112,6 +112,10 @@ function HeroContent() {
   const [isVisible, setIsVisible] = useState(false);
   const controls = useAnimation();
 
+  const {data: session} = useSession();
+  console.log(session?.accessToken);
+  
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(true);
@@ -216,7 +220,7 @@ function HeroContent() {
   };
 
   const navigate = useRouter();
-  const {status, data: session} = useSession();
+  const {status} = useSession();
 
   return (
     <motion.div 
