@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { ChevronDown, ChevronRight, Search, LayoutDashboard, FileText, Package, CheckSquare, Star, Users, DollarSign, Puzzle, Settings, BookTemplate as Template, ArrowRight, User } from 'lucide-react';
 import { ImGithub } from "react-icons/im";
 import { cn } from '@/lib/utils';
-import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 
 interface MenuItem {
@@ -25,23 +24,16 @@ const menuItems: MenuItem[] = [
 
 export default function Sidebar() {
   // const [searchQuery, setSearchQuery] = useState('');
-  const {data: session} = useSession();
   const [userDetails, setUserDetails] = useState<{login: string, id: string, avatar_url: string, url: string, html_url:string, followers_url: string, following_url: string, name: string}>();
 
   useEffect(() => {
   const getUserData = async () => {
-    const res = await fetch(`http://localhost:4000/api/user`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({token: session?.accessToken})
-    })
+    const res = await fetch("/api/user");
     const data = await res.json();
-    setUserDetails(data.data)
+    setUserDetails(data)
   }
-  if(session?.accessToken) getUserData();
-}, [session?.accessToken])
+  getUserData();
+}, [])
   
 
   return (

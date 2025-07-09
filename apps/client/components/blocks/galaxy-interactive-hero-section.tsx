@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Suspense, lazy } from 'react'
 import { ImGithub } from "react-icons/im";
 import { motion, useAnimation } from 'framer-motion';
-import { signIn, signOut, useSession } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import Image from 'next/image';
 const Spline = lazy(() => import('@splinetool/react-spline'))
 
@@ -111,10 +111,6 @@ function ScreenshotSection({ screenshotRef }: { screenshotRef: React.RefObject<H
 function HeroContent() {
   const [isVisible, setIsVisible] = useState(false);
   const controls = useAnimation();
-
-  const {data: session} = useSession();
-  console.log(session?.accessToken);
-  
 
   useEffect(() => {
     const timer = setTimeout(() => {

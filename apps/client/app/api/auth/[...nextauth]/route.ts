@@ -1,3 +1,2 @@
-import { handlers } from "../../../../auth" // Adjust the path as needed to point to your auth.ts
+import { handlers } from "../../../../auth"
 export const { GET, POST } = handlers
-export const runtime = "edge" // optional
