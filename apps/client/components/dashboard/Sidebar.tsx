@@ -18,37 +18,37 @@ interface MenuItem {
 
 const menuItems: MenuItem[] = [
   { id: 'discover', label: 'Discover', icon: Search, isActive: true },
-  
+
 ];
 
 
 
 export default function Sidebar() {
   // const [searchQuery, setSearchQuery] = useState('');
-  const [userDetails, setUserDetails] = useState<{login: string, id: string, avatar_url: string, url: string, html_url:string, followers_url: string, following_url: string, name: string}>();
+  const [userDetails, setUserDetails] = useState<{ login: string, id: string, avatar_url: string, url: string, html_url: string, followers_url: string, following_url: string, name: string }>();
 
   useEffect(() => {
-  const getUserData = async () => {
-    try {
-      const res = await fetch("/api/user", {
-        method: "GET",
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-    const data = await res.json();
-    setUserDetails(data.data)
-    } catch (error) {
-      console.error(error)
+    const getUserData = async () => {
+      try {
+        const res = await fetch("/api/user", {
+          method: "GET",
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        const data = await res.json();
+        setUserDetails(data.data)
+      } catch (error) {
+        console.error(error)
+      }
+
     }
-    
-  }
-  getUserData();
-}, [])
-  
-const handleLogout = () => {
+    getUserData();
+  }, [])
+
+  const handleLogout = () => {
     signOut({
-      callbackUrl: `${window.location.origin}/`, // 👈 full URL for App Router compatibility
+      callbackUrl: `${window.location.origin}/`
     });
   };
 
@@ -61,8 +61,8 @@ const handleLogout = () => {
             <button
               className={cn(
                 "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group",
-                item.isActive 
-                  ? "bg-purple-500/10 text-purple-400 border-l-2 border-purple-500" 
+                item.isActive
+                  ? "bg-purple-500/10 text-purple-400 border-l-2 border-purple-500"
                   : "text-gray-400 hover:text-white hover:bg-gray-800/50"
               )}
             >
@@ -79,21 +79,21 @@ const handleLogout = () => {
       {/* User Profile */}
       {userDetails != null && (
         <div className='flex justify-start items-center'>
-      <a href={`${userDetails.html_url}`} className="p-4 border-gray-800/50" target="_blank" rel="noopener noreferrer">
-        <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800/50 transition-colors duration-200 cursor-pointer group">
-            <Image src={userDetails.avatar_url} width={40} height={40} alt="User Profile" className="text-white rounded-full" />
-          <div className="flex-1">
-            <div className="text-sm font-medium text-white">{userDetails.name}</div>
-            <div  className="text-xs text-gray-400"><span className='flex justify-start items-center'>View on GitHub <ImGithub className='ml-1'/></span></div>
-          </div>
-          <ChevronRight className="w-6 h-6 text-gray-400 group-hover:text-white transition-colors duration-200" />
-        </div>
-      </a>
+          <a href={`${userDetails.html_url}`} className="p-4 border-gray-800/50" target="_blank" rel="noopener noreferrer">
+            <div className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800/50 transition-colors duration-200 cursor-pointer group">
+              <Image src={userDetails.avatar_url} width={40} height={40} alt="User Profile" className="text-white rounded-full" />
+              <div className="flex-1">
+                <div className="text-sm font-medium text-white">{userDetails.name}</div>
+                <div className="text-xs text-gray-400"><span className='flex justify-start items-center'>View on GitHub <ImGithub className='ml-1' /></span></div>
+              </div>
+              <ChevronRight className="w-6 h-6 text-gray-400 group-hover:text-white transition-colors duration-200" />
+            </div>
+          </a>
           <div>
-          <LogOutIcon className='text-white cursor-pointer hover:scale-105' onClick={handleLogout}/>
+            <LogOutIcon className='text-white cursor-pointer hover:scale-105' onClick={handleLogout} />
           </div>
-      </div>
-    )}
+        </div>
+      )}
     </div>
   );
 }
