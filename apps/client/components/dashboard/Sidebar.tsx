@@ -53,7 +53,7 @@ export default function Sidebar() {
   };
 
   return (
-    <div className="w-78 bg-[#0f1419] border-r border-gray-800/50 flex flex-col h-screen shadow-xl">
+    <div className="w-78 bg-[#0f1419] border-r fixed left-0 top-0 border-gray-800/50 flex flex-col h-screen shadow-xl">
       {/* Navigation */}
       <nav className="flex-1 px-4 py-6 space-y-1">
         {menuItems.map((item) => (
