@@ -2,129 +2,42 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Github, Loader2, RefreshCw, Search, Filter } from 'lucide-react';
+import { Github, RefreshCw, Search, Filter, Loader } from 'lucide-react';
 import GitHubRepoCard from './GitHubRepoCard';
+import { GoodFirstRepo } from '@/app/types/Good_First_Issue_Repo_Type';
 
-// Mock data for demonstration - replace with your actual API call
-const mockRepos = [
-  {
-    id: 1,
-    name: "awesome-dashboard",
-    description: "A beautiful and responsive dashboard built with Next.js, TypeScript, and Tailwind CSS. Features real-time data visualization and modern UI components.",
-    html_url: "https://github.com/user/awesome-dashboard",
-    language: "TypeScript",
-    stargazers_count: 1247,
-    forks_count: 89,
-    watchers_count: 1247,
-    updated_at: "2024-01-15T10:30:00Z",
-    created_at: "2023-06-20T14:22:00Z",
-    size: 2048,
-    open_issues_count: 12,
-    private: false,
-    topics: ["dashboard", "nextjs", "typescript", "tailwindcss", "react"]
-  },
-  {
-    id: 2,
-    name: "ml-prediction-engine",
-    description: "Machine learning prediction engine using Python and TensorFlow for real-time data analysis and forecasting.",
-    html_url: "https://github.com/user/ml-prediction-engine",
-    language: "Python",
-    stargazers_count: 892,
-    forks_count: 156,
-    watchers_count: 892,
-    updated_at: "2024-01-10T08:15:00Z",
-    created_at: "2023-03-15T09:45:00Z",
-    size: 5120,
-    open_issues_count: 8,
-    private: false,
-    topics: ["machine-learning", "python", "tensorflow", "ai", "data-science"]
-  },
-  {
-    id: 3,
-    name: "crypto-trading-bot",
-    description: "Automated cryptocurrency trading bot with advanced algorithms and risk management features.",
-    html_url: "https://github.com/user/crypto-trading-bot",
-    language: "JavaScript",
-    stargazers_count: 2156,
-    forks_count: 324,
-    watchers_count: 2156,
-    updated_at: "2024-01-12T16:20:00Z",
-    created_at: "2023-01-10T11:30:00Z",
-    size: 3072,
-    open_issues_count: 5,
-    private: true,
-    topics: ["cryptocurrency", "trading", "bot", "javascript", "automation"]
-  },
-  {
-    id: 4,
-    name: "react-component-library",
-    description: "A comprehensive React component library with TypeScript support and Storybook documentation.",
-    html_url: "https://github.com/user/react-component-library",
-    language: "TypeScript",
-    stargazers_count: 567,
-    forks_count: 78,
-    watchers_count: 567,
-    updated_at: "2024-01-08T12:45:00Z",
-    created_at: "2023-08-05T15:20:00Z",
-    size: 1536,
-    open_issues_count: 3,
-    private: false,
-    topics: ["react", "components", "typescript", "storybook", "ui-library"]
-  },
-  {
-    id: 5,
-    name: "blockchain-explorer",
-    description: "Blockchain explorer and analytics platform with real-time transaction monitoring and visualization.",
-    html_url: "https://github.com/user/blockchain-explorer",
-    language: "Go",
-    stargazers_count: 1834,
-    forks_count: 267,
-    watchers_count: 1834,
-    updated_at: "2024-01-14T09:10:00Z",
-    created_at: "2023-04-12T13:15:00Z",
-    size: 4096,
-    open_issues_count: 15,
-    private: false,
-    topics: ["blockchain", "cryptocurrency", "explorer", "go", "analytics"]
-  },
-  {
-    id: 6,
-    name: "mobile-fitness-app",
-    description: "Cross-platform mobile fitness application built with React Native and Firebase backend.",
-    html_url: "https://github.com/user/mobile-fitness-app",
-    language: "JavaScript",
-    stargazers_count: 743,
-    forks_count: 112,
-    watchers_count: 743,
-    updated_at: "2024-01-11T14:30:00Z",
-    created_at: "2023-07-18T10:45:00Z",
-    size: 2560,
-    open_issues_count: 7,
-    private: false,
-    topics: ["react-native", "mobile", "fitness", "firebase", "health"]
-  }
-];
 
 export default function GitHubReposGrid() {
-  const [repos, setRepos] = useState<any[]>([]);
+  const [repos, setRepos] = useState<GoodFirstRepo[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedLanguage, setSelectedLanguage] = useState('all');
 
   useEffect(() => {
-    // Simulate API call
-    const fetchRepos = async () => {
-      setLoading(true);
-      // Replace this with your actual GitHub API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setRepos(mockRepos);
-      setLoading(false);
-    };
+    const getUserData = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch("/api/repos/good-first-issues", {
+          method: "GET",
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        const data = await res.json();
+        console.log(data);
+        setRepos(data.data)
+      } catch (error) {
+        console.error(error)
+      } finally {
+        setLoading(false);
+      }
 
-    fetchRepos();
-  }, []);
+    }
+    getUserData();
+  }, [])
 
-  const filteredRepos = repos.filter(repo => {
+
+  const filteredRepos: GoodFirstRepo[] = repos.filter(repo => {
     const matchesSearch = repo.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       repo.description?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesLanguage = selectedLanguage === 'all' || repo.language === selectedLanguage;
@@ -145,11 +58,8 @@ export default function GitHubReposGrid() {
           </div>
         </div>
 
-        <div className="flex items-center justify-center py-12">
-          <div className="flex items-center gap-3 text-gray-400">
-            <Loader2 className="w-6 h-6 animate-spin" />
-            <span>Loading repositories...</span>
-          </div>
+        <div className="flex justify-center items-center h-screen animate-spin text-white ">
+          <Loader className="w-7 h-7" />
         </div>
       </div>
     );

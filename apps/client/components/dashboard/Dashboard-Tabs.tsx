@@ -17,23 +17,21 @@ interface Tab {
 
 const tabs: Tab[] = [
   {
-    id: 'overview',
-    label: 'Overview',
+    id: 'good-first-issues',
+    label: 'Good First Issues',
     icon: BarChart3,
     content: (
-
       <GitHubReposGrid />
-
     )
   }
 ];
 
 export default function DashboardTabs() {
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState('good-first-issues');
   const [hoveredTab, setHoveredTab] = useState<string | null>(null);
 
   return (
-    <div className="w-full h-full flex flex-col">
+    <div className="w-full h-full flex flex-col mt-4">
       {/* Tab Navigation */}
       <div className="relative mb-8 w-full flex-shrink-0">
         <div className="flex justify-center items-center w-full gap-10">

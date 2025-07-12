@@ -7,8 +7,6 @@ export async function GET() {
   if (!session || !("accessToken" in session)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-
-  
   
   const accessToken = session.accessToken;
   console.log(accessToken);

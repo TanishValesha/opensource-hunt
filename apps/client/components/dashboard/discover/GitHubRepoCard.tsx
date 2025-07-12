@@ -1,41 +1,18 @@
-"use client";
-
 import { motion } from 'framer-motion';
 import {
   Star,
   GitFork,
   Eye,
-  Calendar,
   Code,
   ExternalLink,
-  GitBranch,
-  Users,
-  Activity,
-  Zap
+  Zap,
+  CircleDot
 } from 'lucide-react';
-import { cn } from '../../../lib/utils';
+import { GoodFirstRepo } from '@/app/types/Good_First_Issue_Repo_Type';
 
-
-
-interface GitHubRepo {
-  id: number;
-  name: string;
-  description: string;
-  html_url: string;
-  language: string;
-  stargazers_count: number;
-  forks_count: number;
-  watchers_count: number;
-  updated_at: string;
-  created_at: string;
-  size: number;
-  open_issues_count: number;
-  private: boolean;
-  topics: string[];
-}
 
 interface GitHubRepoCardProps {
-  repo: GitHubRepo;
+  repo: GoodFirstRepo;
   index: number;
 }
 
@@ -62,28 +39,21 @@ const languageColors: Record<string, string> = {
   Svelte: '#ff3e00',
 };
 
-const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-  const now = new Date();
-  const diffTime = Math.abs(now.getTime() - date.getTime());
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-  if (diffDays === 1) return '1 day ago';
-  if (diffDays < 30) return `${diffDays} days ago`;
-  if (diffDays < 365) return `${Math.floor(diffDays / 30)} months ago`;
-  return `${Math.floor(diffDays / 365)} years ago`;
-};
-
-const formatSize = (bytes: number) => {
-  if (bytes === 0) return '0 KB';
-  const k = 1024;
+const formatSize = (kb: number): string => {
+  if (kb === 0) return '0 KB';
   const sizes = ['KB', 'MB', 'GB'];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+  let i = 0;
+  while (kb >= 1024 && i < sizes.length - 1) {
+    kb = kb / 1024;
+    i++;
+  }
+  return kb.toFixed(1) + ' ' + sizes[i];
 };
+
 
 export default function GitHubRepoCard({ repo, index }: GitHubRepoCardProps) {
-  const languageColor = languageColors[repo.language] || '#8b949e';
+  const languageColor = repo.language ? languageColors[repo.language] || '#8b949e' : '#8b949e';
 
   return (
     <motion.div
@@ -112,7 +82,7 @@ export default function GitHubRepoCard({ repo, index }: GitHubRepoCardProps) {
               <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
                 <Code className="w-5 h-5 text-white" />
               </div>
-              {repo.private && (
+              {repo.isPrivate && (
                 <div className="absolute -top-1 -right-1 w-3 h-3 bg-yellow-500 rounded-full border-2 border-gray-900"></div>
               )}
             </div>
@@ -120,15 +90,11 @@ export default function GitHubRepoCard({ repo, index }: GitHubRepoCardProps) {
               <h3 className="text-lg font-semibold text-white group-hover:text-purple-300 transition-colors duration-200">
                 {repo.name}
               </h3>
-              <div className="flex items-center gap-2 text-xs text-gray-400">
-                <Calendar className="w-3 h-3" />
-                <span>Updated {formatDate(repo.updated_at)}</span>
-              </div>
             </div>
           </div>
 
           <motion.a
-            href={repo.html_url}
+            href={repo.url}
             target="_blank"
             rel="noopener noreferrer"
             whileHover={{ scale: 1.1 }}
@@ -145,32 +111,32 @@ export default function GitHubRepoCard({ repo, index }: GitHubRepoCardProps) {
         </p>
 
         {/* Topics */}
-        {repo.topics && repo.topics.length > 0 && (
+        {repo.topic && repo.topic.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-4">
-            {repo.topics.slice(0, 3).map((topic) => (
+            {repo.topic.slice(0, 3).map((t) => (
               <span
-                key={topic}
+                key={t}
                 className="px-2 py-1 bg-blue-500/10 text-blue-300 text-xs rounded-full border border-blue-500/20"
               >
-                {topic}
+                {t}
               </span>
             ))}
-            {repo.topics.length > 3 && (
+            {repo.topic.length > 3 && (
               <span className="px-2 py-1 bg-gray-500/10 text-gray-400 text-xs rounded-full border border-gray-500/20">
-                +{repo.topics.length - 3} more
+                +{repo.topic.length - 3} more
               </span>
             )}
           </div>
         )}
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 gap-4 mb-4">
+        <div className="grid grid-cols-3 gap-4 mb-4">
           <div className="flex items-center gap-2">
             <div className="p-1.5 bg-yellow-500/10 rounded-lg">
               <Star className="w-4 h-4 text-yellow-400" />
             </div>
             <div>
-              <p className="text-white font-medium text-sm">{repo.stargazers_count.toLocaleString()}</p>
+              <p className="text-white font-medium text-sm">{repo.stars.toLocaleString()}</p>
               <p className="text-gray-400 text-xs">Stars</p>
             </div>
           </div>
@@ -180,7 +146,7 @@ export default function GitHubRepoCard({ repo, index }: GitHubRepoCardProps) {
               <GitFork className="w-4 h-4 text-blue-400" />
             </div>
             <div>
-              <p className="text-white font-medium text-sm">{repo.forks_count.toLocaleString()}</p>
+              <p className="text-white font-medium text-sm">{repo.forks.toString()}</p>
               <p className="text-gray-400 text-xs">Forks</p>
             </div>
           </div>
@@ -190,18 +156,28 @@ export default function GitHubRepoCard({ repo, index }: GitHubRepoCardProps) {
               <Eye className="w-4 h-4 text-green-400" />
             </div>
             <div>
-              <p className="text-white font-medium text-sm">{repo.watchers_count.toLocaleString()}</p>
+              <p className="text-white font-medium text-sm">{repo.watchers.toLocaleString()}</p>
               <p className="text-gray-400 text-xs">Watchers</p>
             </div>
           </div>
 
           <div className="flex items-center gap-2">
             <div className="p-1.5 bg-red-500/10 rounded-lg">
-              <Activity className="w-4 h-4 text-red-400" />
+              <CircleDot className="w-4 h-4 text-red-400" />
             </div>
             <div>
-              <p className="text-white font-medium text-sm">{repo.open_issues_count}</p>
+              <p className="text-white font-medium text-sm">{repo.open_issue_count.toLocaleString()}</p>
               <p className="text-gray-400 text-xs">Issues</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="p-1.5 bg-green-500/10 rounded-lg">
+              <CircleDot className="w-4 h-4 text-green-400" />
+            </div>
+
+            <div>
+              <p className="text-white font-medium text-sm">{repo.goodFirstIssues.toLocaleString()}</p>
+              <p className="text-gray-400 text-xs">Good First Issues</p>
             </div>
           </div>
         </div>
@@ -221,12 +197,12 @@ export default function GitHubRepoCard({ repo, index }: GitHubRepoCardProps) {
 
             <div className="flex items-center gap-1 text-gray-400 text-xs">
               <Zap className="w-3 h-3" />
-              <span>{formatSize(repo.size * 1024)}</span>
+              <span>{formatSize(repo.size)}</span>
             </div>
           </div>
 
           <div className="text-gray-400 text-xs">
-            Created {formatDate(repo.created_at)}
+            Created {new Date(repo.created_at).toLocaleDateString()}
           </div>
         </div>
 

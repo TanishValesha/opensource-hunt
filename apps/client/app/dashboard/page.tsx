@@ -11,10 +11,10 @@ export default function Home() {
       <Sidebar />
 
       {/* Main Content Area */}
-      <div className="flex-1 ml-84 flex flex-col h-full">
+      <div className="flex-1 ml-80 flex flex-col h-full">
         {/* Scrollable Dashboard Content */}
         <div className="flex-1 overflow-hidden">
-          <div className="flex items-start justify-center h-full z-30">
+          <div className="flex items-start justify-center h-full z-30 p-8">
             <DashboardTabs />
           </div>
         </div>
