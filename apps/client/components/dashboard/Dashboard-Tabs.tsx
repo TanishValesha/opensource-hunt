@@ -4,9 +4,12 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   BarChart3,
+  CircleDot,
+  Star,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import GitHubReposGrid from './discover/GitHubGrid';
+import GitHubReposGrid from './discover/GoodFirstIssues/GitHubGrid';
+import GitHubReposStarGrid from './discover/MostStarred/GitHubGridStar';
 
 interface Tab {
   id: string;
@@ -19,9 +22,17 @@ const tabs: Tab[] = [
   {
     id: 'good-first-issues',
     label: 'Good First Issues',
-    icon: BarChart3,
+    icon: CircleDot,
     content: (
       <GitHubReposGrid />
+    )
+  },
+  {
+    id: 'most-starred',
+    label: 'Most Starred',
+    icon: Star,
+    content: (
+      <GitHubReposStarGrid />
     )
   }
 ];

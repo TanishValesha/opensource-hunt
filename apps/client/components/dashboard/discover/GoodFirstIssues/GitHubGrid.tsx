@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Github, RefreshCw, Search, Filter, Loader } from 'lucide-react';
-import GitHubRepoCard from './GitHubRepoCard';
+import GitHubRepoCard from '../GitHubRepoCard';
 import { GoodFirstRepo } from '@/app/types/Good_First_Issue_Repo_Type';
 
 
@@ -70,23 +70,11 @@ export default function GitHubReposGrid() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
-            <Github className="w-5 h-5 text-white" />
-          </div>
           <div>
-            <h2 className="text-xl font-semibold text-white">GitHub Repositories</h2>
-            <p className="text-gray-400 text-sm">{repos.length} repositories found</p>
+            <h2 className="text-xl font-semibold text-white">Top 100 Repositories according to number of Good First Issue</h2>
           </div>
         </div>
 
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="flex items-center gap-2 px-4 py-2 bg-gray-800/50 hover:bg-gray-700/50 border border-gray-700/50 rounded-lg text-gray-300 hover:text-white transition-all duration-200"
-        >
-          <RefreshCw className="w-4 h-4" />
-          <span className="text-sm">Refresh</span>
-        </motion.button>
       </div>
 
       {/* Filters */}

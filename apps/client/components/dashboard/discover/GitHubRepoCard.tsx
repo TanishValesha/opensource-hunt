@@ -170,16 +170,15 @@ export default function GitHubRepoCard({ repo, index }: GitHubRepoCardProps) {
               <p className="text-gray-400 text-xs">Issues</p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          {repo.goodFirstIssues && <div className="flex items-center gap-2">
             <div className="p-1.5 bg-green-500/10 rounded-lg">
-              <CircleDot className="w-4 h-4 text-green-400" />
+              <CircleDot className="w-6 h-6 text-green-400" />
             </div>
-
             <div>
-              <p className="text-white font-medium text-sm">{repo.goodFirstIssues.toLocaleString()}</p>
-              <p className="text-gray-400 text-xs">Good First Issues</p>
+              <p className="text-white font-medium text-md">{repo.goodFirstIssues.toLocaleString()}</p>
+              <p className="text-gray-400 text-md">Good First Issues</p>
             </div>
-          </div>
+          </div>}
         </div>
 
         {/* Footer */}
