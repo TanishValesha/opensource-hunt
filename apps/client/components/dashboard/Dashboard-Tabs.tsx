@@ -5,11 +5,13 @@ import { motion } from 'framer-motion';
 import {
   BarChart3,
   CircleDot,
+  GitFork,
   Star,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import GitHubReposGrid from './discover/GoodFirstIssues/GitHubGrid';
-import GitHubReposStarGrid from './discover/MostStarred/GitHubGridStar';
+import GitHubReposGrid from './discover/goodFirstIssues/GitHubGrid';
+import GitHubReposStarGrid from './discover/mostStarred/GitHubGridStar';
+import GitHubReposForkGrid from './discover/mostForked/GitHubGridFork';
 
 interface Tab {
   id: string;
@@ -33,6 +35,14 @@ const tabs: Tab[] = [
     icon: Star,
     content: (
       <GitHubReposStarGrid />
+    )
+  },
+  {
+    id: 'most-forked',
+    label: 'Most Forked',
+    icon: GitFork,
+    content: (
+      <GitHubReposForkGrid />
     )
   }
 ];

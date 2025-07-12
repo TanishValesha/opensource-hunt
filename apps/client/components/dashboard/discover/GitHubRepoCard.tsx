@@ -113,7 +113,7 @@ export default function GitHubRepoCard({ repo, index }: GitHubRepoCardProps) {
         {/* Topics */}
         {repo.topic && repo.topic.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-4">
-            {repo.topic.slice(0, 3).map((t) => (
+            {repo.topic.slice(0, 5).map((t) => (
               <span
                 key={t}
                 className="px-2 py-1 bg-blue-500/10 text-blue-300 text-xs rounded-full border border-blue-500/20"
@@ -121,9 +121,9 @@ export default function GitHubRepoCard({ repo, index }: GitHubRepoCardProps) {
                 {t}
               </span>
             ))}
-            {repo.topic.length > 3 && (
+            {repo.topic.length > 5 && (
               <span className="px-2 py-1 bg-gray-500/10 text-gray-400 text-xs rounded-full border border-gray-500/20">
-                +{repo.topic.length - 3} more
+                +{repo.topic.length - 5} more
               </span>
             )}
           </div>
@@ -146,7 +146,7 @@ export default function GitHubRepoCard({ repo, index }: GitHubRepoCardProps) {
               <GitFork className="w-4 h-4 text-blue-400" />
             </div>
             <div>
-              <p className="text-white font-medium text-sm">{repo.forks.toString()}</p>
+              <p className="text-white font-medium text-sm">{repo.forks.toLocaleString()}</p>
               <p className="text-gray-400 text-xs">Forks</p>
             </div>
           </div>

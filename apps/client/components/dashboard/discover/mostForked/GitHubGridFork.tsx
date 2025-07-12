@@ -7,8 +7,8 @@ import GitHubRepoCard from '../GitHubRepoCard';
 import { GoodFirstRepo } from '@/app/types/Good_First_Issue_Repo_Type';
 
 
-export default function GitHubReposStarGrid() {
-    const [starRepos, setStarRepos] = useState<GoodFirstRepo[]>([]);
+export default function GitHubReposForkGrid() {
+    const [forkRepos, setForkRepos] = useState<GoodFirstRepo[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedLanguage, setSelectedLanguage] = useState('all');
@@ -17,7 +17,7 @@ export default function GitHubReposStarGrid() {
         const getUserData = async () => {
             try {
                 setLoading(true);
-                const res = await fetch("/api/repos/most-starred", {
+                const res = await fetch("/api/repos/most-forked", {
                     method: "GET",
                     headers: {
                         'Content-Type': 'application/json'
@@ -25,7 +25,7 @@ export default function GitHubReposStarGrid() {
                 });
                 const data = await res.json();
                 console.log(data);
-                setStarRepos(data.data)
+                setForkRepos(data.data)
             } catch (error) {
                 console.error(error)
             } finally {
@@ -37,14 +37,14 @@ export default function GitHubReposStarGrid() {
     }, [])
 
 
-    const filteredRepos: GoodFirstRepo[] = starRepos.filter(repo => {
+    const filteredRepos: GoodFirstRepo[] = forkRepos.filter(repo => {
         const matchesSearch = repo.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
             repo.description?.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesLanguage = selectedLanguage === 'all' || repo.language === selectedLanguage;
         return matchesSearch && matchesLanguage;
     });
 
-    const languages = ['all', ...Array.from(new Set(starRepos.map(repo => repo.language).filter(Boolean)))];
+    const languages = ['all', ...Array.from(new Set(forkRepos.map(repo => repo.language).filter(Boolean)))];
 
     if (loading) {
         return (
@@ -71,7 +71,7 @@ export default function GitHubReposStarGrid() {
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                     <div>
-                        <h2 className="text-xl font-semibold text-white">Top 100 Repositories most Starred </h2>
+                        <h2 className="text-xl font-semibold text-white">Top 100 Most Forked Repositories </h2>
                     </div>
                 </div>
 
