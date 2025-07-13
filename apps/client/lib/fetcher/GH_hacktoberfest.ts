@@ -2,13 +2,13 @@ import { cacheJSON } from '../cache';
 
 const GQL_ENDPOINT = 'https://api.github.com/graphql';
 
-export async function getMostStarredRepos(token: string) {
+export async function getHacktoberfestRepos(token: string) {
   return cacheJSON(
-    'mostStarred:gql:v1',
+    'hacktoberfest:gql:v1',
     process.env.NODE_ENV === 'production' ? 60 * 60 * 12 : 60,
     async () => {
       const query = `
-        query MostStarred($query: String!, $first: Int!) {
+        query HacktoberfestRepos($query: String!, $first: Int!) {
           search(query: $query, type: REPOSITORY, first: $first) {
             nodes {
               ... on Repository {
@@ -38,7 +38,7 @@ export async function getMostStarredRepos(token: string) {
       const body = JSON.stringify({
         query,
         variables: {
-          query: 'archived:false is:public has:license fork:false sort:stars',
+          query: 'topic:hacktoberfest archived:false sort:stars',
           first: 100,
         },
       });
@@ -77,7 +77,7 @@ export async function getMostStarredRepos(token: string) {
         topic: r.repositoryTopics.nodes.map((t: any) => t.topic.name),
       }));
 
-      repos.sort((a: any, b: any) => b.stars - a.stars);
+      repos.sort((a: any, b: any) => b.open_issue_count - a.open_issue_count);
 
       return repos;
     }

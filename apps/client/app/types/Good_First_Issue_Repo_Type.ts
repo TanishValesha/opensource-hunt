@@ -1,4 +1,4 @@
-export interface GoodFirstRepo {
+export interface Repo {
   id: number;
   name: string;
   description: string | null;
@@ -13,5 +13,6 @@ export interface GoodFirstRepo {
   open_issue_count: number;
   isPrivate: boolean;
   topic: string[];
-  goodFirstIssues: number;
+  goodFirstIssues?: number;
+  hacktoberfestIssues?: number
 }

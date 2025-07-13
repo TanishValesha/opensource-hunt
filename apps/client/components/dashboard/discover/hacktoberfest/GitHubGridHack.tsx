@@ -1,14 +1,13 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Github, RefreshCw, Search, Filter, Loader } from 'lucide-react';
+import { Github, Search, Filter, Loader } from 'lucide-react';
 import GitHubRepoCard from '../GitHubRepoCard';
-import { GoodFirstRepo } from '@/app/types/Good_First_Issue_Repo_Type';
+import { Repo } from '@/app/types/Good_First_Issue_Repo_Type';
 
 
-export default function GitHubReposForkGrid() {
-    const [forkRepos, setForkRepos] = useState<GoodFirstRepo[]>([]);
+export default function GitHubReposHackGrid() {
+    const [hackRepos, setHackRepos] = useState<Repo[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedLanguage, setSelectedLanguage] = useState('all');
@@ -17,7 +16,7 @@ export default function GitHubReposForkGrid() {
         const getUserData = async () => {
             try {
                 setLoading(true);
-                const res = await fetch("/api/repos/most-forked", {
+                const res = await fetch("/api/repos/hacktoberfest", {
                     method: "GET",
                     headers: {
                         'Content-Type': 'application/json'
@@ -25,7 +24,7 @@ export default function GitHubReposForkGrid() {
                 });
                 const data = await res.json();
                 console.log(data);
-                setForkRepos(data.data)
+                setHackRepos(data.data)
             } catch (error) {
                 console.error(error)
             } finally {
@@ -37,14 +36,14 @@ export default function GitHubReposForkGrid() {
     }, [])
 
 
-    const filteredRepos: GoodFirstRepo[] = forkRepos.filter(repo => {
+    const filteredRepos: Repo[] = hackRepos.filter(repo => {
         const matchesSearch = repo.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
             repo.description?.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesLanguage = selectedLanguage === 'all' || repo.language === selectedLanguage;
         return matchesSearch && matchesLanguage;
     });
 
-    const languages = ['all', ...Array.from(new Set(forkRepos.map(repo => repo.language).filter(Boolean)))];
+    const languages = ['all', ...Array.from(new Set(hackRepos.map(repo => repo.language).filter(Boolean)))];
 
     if (loading) {
         return (

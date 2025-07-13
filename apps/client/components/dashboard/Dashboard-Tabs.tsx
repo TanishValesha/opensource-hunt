@@ -1,17 +1,15 @@
 "use client";
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
 import {
-  BarChart3,
   CircleDot,
   GitFork,
   Star,
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import GitHubReposGrid from './discover/goodFirstIssues/GitHubGrid';
 import GitHubReposStarGrid from './discover/mostStarred/GitHubGridStar';
 import GitHubReposForkGrid from './discover/mostForked/GitHubGridFork';
+import GitHubReposHackGrid from './discover/hacktoberfest/GitHubGridHack';
 
 interface Tab {
   id: string;
@@ -43,6 +41,14 @@ const tabs: Tab[] = [
     icon: GitFork,
     content: (
       <GitHubReposForkGrid />
+    )
+  },
+  {
+    id: 'hacktoberfest',
+    label: 'Hacktoberfest',
+    icon: GitFork,
+    content: (
+      <GitHubReposHackGrid />
     )
   }
 ];

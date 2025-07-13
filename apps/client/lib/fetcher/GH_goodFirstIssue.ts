@@ -4,7 +4,7 @@ const GQL_ENDPOINT = 'https://api.github.com/graphql';
 
 export async function getGoodFirstRepos(token: string) {
   return cacheJSON(
-    'goodfirst:gql:v1',
+    'goodFirst:gql:v1',
     process.env.NODE_ENV === 'production' ? 60 * 60 * 12 : 60,
     async () => {
       const query = `

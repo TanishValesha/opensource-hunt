@@ -48,19 +48,9 @@ export default function GitHubReposGrid() {
 
   if (loading) {
     return (
-      <div className="space-y-6s">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
-              <Github className="w-5 h-5 text-white" />
-            </div>
-            <h2 className="text-xl font-semibold text-white">GitHub Repositories</h2>
-          </div>
-        </div>
-
-        <div className="flex justify-center items-center h-screen animate-spin text-white ">
-          <Loader className="w-7 h-7" />
-        </div>
+      <div className="flex flex-col justify-center items-center h-screen gap-2 text-white ">
+        <Loader className="w-7 h-7 animate-spin" />
+        <p className='text-white'>This may take a while......</p>
       </div>
     );
   }
