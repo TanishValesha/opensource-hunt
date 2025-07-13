@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Github, RefreshCw, Search, Filter, Loader } from 'lucide-react';
 import GitHubRepoCard from '../GitHubRepoCard';
-import { GoodFirstRepo } from '@/app/types/Good_First_Issue_Repo_Type';
+import { GoodFirstRepo } from '@/app/types/Repo';
 
 
 export default function GitHubReposGrid() {

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Github, Search, Filter, Loader } from 'lucide-react';
 import GitHubRepoCard from '../GitHubRepoCard';
-import { Repo } from '@/app/types/Good_First_Issue_Repo_Type';
+import { Repo } from '@/app/types/Repo';
 
 
 export default function GitHubReposHackGrid() {

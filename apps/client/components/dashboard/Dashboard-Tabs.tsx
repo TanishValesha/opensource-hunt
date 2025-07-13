@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import {
+  Calendar1,
   CircleDot,
   GitFork,
   Star,
@@ -46,7 +47,7 @@ const tabs: Tab[] = [
   {
     id: 'hacktoberfest',
     label: 'Hacktoberfest',
-    icon: GitFork,
+    icon: Calendar1,
     content: (
       <GitHubReposHackGrid />
     )

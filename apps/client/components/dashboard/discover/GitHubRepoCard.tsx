@@ -8,7 +8,7 @@ import {
   Zap,
   CircleDot
 } from 'lucide-react';
-import { GoodFirstRepo } from '@/app/types/Good_First_Issue_Repo_Type';
+import { GoodFirstRepo } from '@/app/types/Repo';
 
 
 interface GitHubRepoCardProps {

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { auth } from "@/auth";
-import { GoodFirstRepo } from '@/app/types/Good_First_Issue_Repo_Type';
+import { GoodFirstRepo } from '@/app/types/Repo';
 import { getMostStarredRepos } from '@/lib/fetcher/GH_mostStarred';
 import { getMostForkedRepos } from '@/lib/fetcher/GH_mostForked';
 

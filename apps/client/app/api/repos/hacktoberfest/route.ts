@@ -1,7 +1,7 @@
 import { getGoodFirstRepos } from '@/lib/fetcher/GH_goodFirstIssue';
 import { NextResponse } from 'next/server';
 import { auth } from "@/auth";
-import { GoodFirstRepo } from '@/app/types/Good_First_Issue_Repo_Type';
+import { GoodFirstRepo } from '@/app/types/Repo';
 import { getHacktoberfestRepos } from '@/lib/fetcher/GH_hacktoberfest';
 
 export async function GET() {

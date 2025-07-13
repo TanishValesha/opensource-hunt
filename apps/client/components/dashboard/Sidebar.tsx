@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { ChevronDown, ChevronRight, Search, LayoutDashboard, FileText, Package, CheckSquare, Star, Users, DollarSign, Puzzle, Settings, BookTemplate as Template, ArrowRight, User, LogOutIcon } from 'lucide-react';
+import { ChevronDown, ChevronRight, Search, LayoutDashboard, FileText, Package, CheckSquare, Star, Users, DollarSign, Puzzle, Settings, BookTemplate as Template, ArrowRight, User, LogOutIcon, FolderCode } from 'lucide-react';
 import { ImGithub } from "react-icons/im";
 import { signOut } from 'next-auth/react';
 import { cn } from '@/lib/utils';
@@ -16,15 +16,11 @@ interface MenuItem {
   submenuItems?: string[];
 }
 
-const menuItems: MenuItem[] = [
-  { id: 'discover', label: 'Discover', icon: Search, isActive: true },
-
-];
-
-
-
-export default function Sidebar() {
-  // const [searchQuery, setSearchQuery] = useState('');
+interface SidebarProps {
+  initialMenuItems: MenuItem[];
+  onItemClick: (id: string) => void;
+}
+export default function Sidebar({ initialMenuItems, onItemClick }: SidebarProps) {
   const [userDetails, setUserDetails] = useState<{ login: string, id: string, avatar_url: string, url: string, html_url: string, followers_url: string, following_url: string, name: string }>();
 
   useEffect(() => {
@@ -56,9 +52,10 @@ export default function Sidebar() {
     <div className="w-78 bg-[#0f1419] border-r fixed left-0 top-0 border-gray-800/50 flex flex-col h-screen shadow-xl">
       {/* Navigation */}
       <nav className="flex-1 px-4 py-6 space-y-1">
-        {menuItems.map((item) => (
+        {initialMenuItems.map((item) => (
           <div key={item.id}>
             <button
+              onClick={() => onItemClick(item.id)}
               className={cn(
                 "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group",
                 item.isActive
@@ -66,10 +63,12 @@ export default function Sidebar() {
                   : "text-gray-400 hover:text-white hover:bg-gray-800/50"
               )}
             >
-              <item.icon className={cn(
-                "w-5 h-5 transition-colors duration-200",
-                item.isActive ? "text-purple-400" : "text-gray-400 group-hover:text-white"
-              )} />
+              <item.icon
+                className={cn(
+                  "w-5 h-5 transition-colors duration-200",
+                  item.isActive ? "text-purple-400" : "text-gray-400 group-hover:text-white"
+                )}
+              />
               <span className="flex-1 text-left">{item.label}</span>
             </button>
           </div>
